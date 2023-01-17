@@ -6,8 +6,12 @@
 // modify it under the terms of the MIT License; see LICENSE file for more
 // details.
 
+import _cloneDeep from "lodash/cloneDeep";
+import _defaults from "lodash/defaults";
+import _pick from "lodash/pick";
+import _set from "lodash/set";
+import _get from "lodash/get";
 import { DepositRecordSerializer } from "react-invenio-deposit";
-import { cloneDeep, defaults, pick, set } from "lodash";
 import { Field, Marc21MetadataFields } from "./fields";
 
 export class Marc21RecordSerializer extends DepositRecordSerializer {
@@ -53,10 +57,10 @@ export class Marc21RecordSerializer extends DepositRecordSerializer {
    * @returns {object} frontend compatible record object
    */
   deserialize(record) {
-    record = cloneDeep(record);
+    record = _cloneDeep(record);
 
     let deserializedRecord = record;
-    deserializedRecord = pick(deserializedRecord, [
+    deserializedRecord = _pick(deserializedRecord, [
       "access",
       "expanded",
       "metadata",
@@ -73,11 +77,7 @@ export class Marc21RecordSerializer extends DepositRecordSerializer {
       deserializedRecord =
         this.depositRecordSchema[key].deserialize(deserializedRecord);
     }
-    if ("id" in record) {
-      if (typeof record.id !== "string") {
-        delete deserializedRecord["id"];
-      }
-    }
+
     this.current_record = deserializedRecord;
     return deserializedRecord;
   }
@@ -89,19 +89,30 @@ export class Marc21RecordSerializer extends DepositRecordSerializer {
    * @returns {object} - object representing errors
    */
   deserializeErrors(errors) {
-    let deserializedErrors = {};
-    for (let e of errors) {
-      keys = e.field.split(".");
-      if (keys[0] == "metadata") {
-        if (keys[1] == "fields") {
-          fields = get(this.current_record, "metadata.fields");
-          for (let key in fields) {
-          }
-        }
-      }
-      set(deserializedErrors, e.field, e.messages.join(" "));
-    }
+    let deserializedErrors = [];
+    // for (let e of errors) {
+    //   keys = e.field.split(".");
+    //   if (keys[0] == "metadata") {
+    //     if (keys[1] == "fields") {
+    //       let fields = _get(this.current_record, "metadata.fields");
+    //       for (let key in fields) {
+    //       }
+    //     }
+    //   }
+      //deserializedErrors.push({e.field: e.messages.join(" ")});
+    //}
 
+    // TODO - WARNING: This doesn't convert backend error paths to frontend
+    //                 error paths. Doing so is non-trivial
+    //                 (re-using deserialize has some caveats)
+    //                 Form/Error UX is tackled in next sprint and this is good
+    //                 enough for now.
+    for (const e of errors) {
+      let keys = e.field.split(".");
+      keys.shift();
+      let field = keys.join(".")
+      _set(deserializedErrors, field, e.messages.join(" "));
+    }
     return deserializedErrors;
   }
 
@@ -113,9 +124,9 @@ export class Marc21RecordSerializer extends DepositRecordSerializer {
    *
    */
   serialize(record) {
-    record = cloneDeep(record);
+    record = _cloneDeep(record);
     let serializedRecord = record; //this.removeEmptyValues(record);
-    serializedRecord = pick(serializedRecord, [
+    serializedRecord = _pick(serializedRecord, [
       "access",
       "metadata",
       "id",
@@ -127,13 +138,8 @@ export class Marc21RecordSerializer extends DepositRecordSerializer {
     for (let key in this.depositRecordSchema) {
       serializedRecord = this.depositRecordSchema[key].serialize(serializedRecord);
     }
-    if ("id" in record) {
-      if (typeof record.id !== "string") {
-        delete serializedRecord["id"];
-      }
-    }
 
-    defaults(serializedRecord, { metadata: {} });
+    _defaults(serializedRecord, { metadata: {} });
 
     return serializedRecord;
   }

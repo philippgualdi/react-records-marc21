@@ -7,6 +7,7 @@
 // details.
 
 import React, { Component } from "react";
+import { FieldArray } from "formik";
 import PropTypes from "prop-types";
 import { Button, Form, Icon } from "semantic-ui-react";
 import { ArrayField, GroupField } from "react-invenio-forms";
@@ -14,6 +15,13 @@ import { MetadataField } from "./MetadataField";
 import { LeaderField } from "./LeaderField";
 
 export class MetadataFields extends Component {
+  constructor(props) {
+    super(props);
+    this.validator = props.validator;
+  }
+  
+
+
   render() {
     const { fieldPath } = this.props;
     return (
@@ -21,7 +29,7 @@ export class MetadataFields extends Component {
         <GroupField fieldPath={`${fieldPath}.leader`} className={"leader"}>
           <LeaderField fieldPath={`${fieldPath}.leader`} />
         </GroupField>
-        <ArrayField
+        <FieldArray
           addButtonLabel={"Add"}
           fieldPath={`${fieldPath}.fields`}
           defaultNewValue={{ id: "", ind1: "", ind2: "", subfield: "$$" }}
@@ -40,7 +48,7 @@ export class MetadataFields extends Component {
               </GroupField>
             );
           }}
-        </ArrayField>
+        </FieldArray>
       </>
     );
   }
@@ -48,8 +56,10 @@ export class MetadataFields extends Component {
 
 MetadataFields.propTypes = {
   fieldPath: PropTypes.string,
+  validationSchema: PropTypes.object,
 };
 
 MetadataFields.defaultProps = {
   fieldPath: "metadata",
+  validationSchema: {},
 };
