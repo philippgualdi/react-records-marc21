@@ -11,3 +11,5 @@ export { MetadataFields } from "./MetadataFields";
 export { MetadataField } from "./MetadataField";
 export { LeaderField } from "./LeaderField";
 export { TemplateField } from "./TemplateField";
+// export { ConfirmationModal } from "./ConfirmationModal";
+export { Marc21DepositHeader } from "./DepositHeader";
