@@ -90,27 +90,11 @@ export class Marc21RecordSerializer extends DepositRecordSerializer {
    */
   deserializeErrors(errors) {
     let deserializedErrors = [];
-    // for (let e of errors) {
-    //   keys = e.field.split(".");
-    //   if (keys[0] == "metadata") {
-    //     if (keys[1] == "fields") {
-    //       let fields = _get(this.current_record, "metadata.fields");
-    //       for (let key in fields) {
-    //       }
-    //     }
-    //   }
-      //deserializedErrors.push({e.field: e.messages.join(" ")});
-    //}
 
-    // TODO - WARNING: This doesn't convert backend error paths to frontend
-    //                 error paths. Doing so is non-trivial
-    //                 (re-using deserialize has some caveats)
-    //                 Form/Error UX is tackled in next sprint and this is good
-    //                 enough for now.
     for (const e of errors) {
       let keys = e.field.split(".");
       keys.shift();
-      let field = keys.join(".")
+      let field = keys.join(".");
       _set(deserializedErrors, field, e.messages.join(" "));
     }
     return deserializedErrors;
