@@ -28,14 +28,13 @@
     "init_catalog": "node ./src/lib/translations/scripts/initCatalog",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint src/ --ext .js",
     "format": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --write \"src/**/*.js\"",
     "check-format": "prettier --config ./.prettierrc --ignore-path ./.prettierignore  -c \"src/**/*.js\""
   },
   "dependencies": {
-    "js-data": "^3.0.8",
     "prismjs": "^1.20.0",
-    "react-invenio-deposit": "^1.0.2",
+    "react-invenio-deposit": "^2.5.0",
     "marcjs": "^2.0.1"
   },
   "peerDependencies": {
@@ -47,18 +46,16 @@
     "formik": "^2.1.0",
     "i18next": "^20.3.0",
     "i18next-browser-languagedetector": "^6.1.0",
-    "js-data": "^3.0.8",
     "lodash": "^4.17.0",
     "luxon": "^1.23.0",
     "marcjs": "^2.0.1",
-    "query-string": "^7.1.1",
     "react": "^16.13.0",
     "react-dnd": "^11.1.0",
     "react-dnd-html5-backend": "^11.1.0",
     "react-dom": "^16.13.0",
     "react-dropzone": "^11.0.0",
     "react-i18next": "^11.11.0",
-    "react-invenio-forms": "^1.0.0",
+    "react-invenio-forms": "^2.0.0",
     "react-overridable": "^0.0.3",
     "react-redux": "^7.2.0",
     "react-searchkit": "^2.0.0",
@@ -66,13 +63,14 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^2.1.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "query-string": "^7.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
     "@ckeditor/ckeditor5-build-classic": "^16.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",
-    "@inveniosoftware/eslint-config-invenio": "^1.0.0",
+    "@inveniosoftware/eslint-config-invenio": "^2.0.0",
     "@rollup/plugin-alias": "^3.1.0",
     "@rollup/plugin-babel": "^5.0.0",
     "@rollup/plugin-commonjs": "^11.1.0",
@@ -103,9 +101,8 @@
     "react-dnd": "^11.1.0",
     "react-dnd-html5-backend": "^11.1.0",
     "react-dom": "^16.13.0",
-    "react-dropzone": "^11.0.0",
     "react-i18next": "^11.11.0",
-    "react-invenio-deposit": "^1.0.2",
+    "react-invenio-deposit": "^2.5.0",
     "react-invenio-forms": "^1.0.0",
     "react-overridable": "^0.0.3",
     "react-redux": "^7.2.0",
@@ -121,7 +118,8 @@
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-url": "^3.0.0",
     "semantic-ui-css": "^2.4.0",
-    "semantic-ui-react": "^2.1.0"
+    "semantic-ui-react": "^2.1.0",
+    "yup": "^0.32.11"
   },
   "author": {
     "name": "Graz University of Technology",

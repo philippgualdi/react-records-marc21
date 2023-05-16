@@ -8,7 +8,6 @@
 import _set from "lodash/set";
 import _get from "lodash/get";
 import _isEmpty from "lodash/isEmpty";
-import { Schema } from 'js-data';
 
 export class Marc21RecordSchema {
   /**
@@ -32,13 +31,13 @@ export class Marc21RecordSchema {
 
   setSchema(schema) {
     console.log("setSchema");
-    this.schema = new Schema(schema);
+    //this.schema = new Schema(schema);
   }
 
-  marcjsToSchema(metadata){
+  marcjsToSchema(metadata) {
     let toSchema = {};
     _set(toSchema, "leader", _get(metadata, "leader", ""));
-    let fields =  _get(metadata, "fields", {})
+    let fields = _get(metadata, "fields", {});
     let internalFields = new Object();
     for (let i = 0; i < fields.length; i++) {
       let field = fields[i];
@@ -49,13 +48,12 @@ export class Marc21RecordSchema {
       let test = subfield.trim().split("$$");
       let internalfield = new Object();
       for (let j = 0; j < test.length; j++) {
-        if (_isEmpty(test[j])){
-          continue
+        if (_isEmpty(test[j])) {
+          continue;
         }
         let code = test[j][0];
         let value = test[j].substring(1);
         _set(internalfield, code, [value.trim()]);
-
       }
       ne.subfields = internalfield;
       console.log(ne);
@@ -65,8 +63,7 @@ export class Marc21RecordSchema {
     return toSchema;
   }
 
-
-  validate(metadata){
+  validate(metadata) {
     console.log("Validate");
     let internalrecord = this.marcjsToSchema(metadata);
     let errors = this.schema.validate(internalrecord);
@@ -74,13 +71,12 @@ export class Marc21RecordSchema {
     console.log(errors);
     for (let i = 0; i < errors.length; i++) {
       let path = errors[i].path.split(".");
-      let index = metadata.fields.findIndex(x => x.id === path[1]);
+      let index = metadata.fields.findIndex((x) => x.id === path[1]);
       let obj = new Object();
       path[1] = index;
       path = ["metadata"].concat(path);
-      obj[path.join(".")] = errors[i].expected
-      frontendError.push(obj)
-      
+      obj[path.join(".")] = errors[i].expected;
+      frontendError.push(obj);
     }
     console.log(frontendError);
     return frontendError;
