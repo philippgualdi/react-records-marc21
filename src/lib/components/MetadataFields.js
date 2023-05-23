@@ -19,11 +19,10 @@ export class MetadataFields extends Component {
     super(props);
     this.validator = props.validator;
   }
-  
-
 
   render() {
-    const { fieldPath } = this.props;
+    const { fieldPath, errors } = this.props;
+    //const error = getIn(errors, fieldPath, null);
     return (
       <>
         <GroupField fieldPath={`${fieldPath}.leader`} className={"leader"}>
@@ -34,21 +33,10 @@ export class MetadataFields extends Component {
           fieldPath={`${fieldPath}.fields`}
           defaultNewValue={{ id: "", ind1: "", ind2: "", subfield: "$$" }}
           className="marcxml metadata fields."
-        >
-          {({ arrayHelpers, indexPath }) => {
-            const fieldPathPrefix = `${fieldPath}.fields.${indexPath}`;
-            return (
-              <GroupField optimized>
-                <MetadataField fieldPath={fieldPathPrefix} />
-                <Form.Field width={1}>
-                  <Button icon onClick={() => arrayHelpers.remove(indexPath)}>
-                    <Icon name="close" />
-                  </Button>
-                </Form.Field>
-              </GroupField>
-            );
-          }}
-        </FieldArray>
+          component={(formikProps) => (
+            <MetadataField {...formikProps} {...this.props} />
+          )}
+        ></FieldArray>
       </>
     );
   }

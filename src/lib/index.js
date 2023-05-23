@@ -9,3 +9,4 @@
 export * from "./components";
 export { Marc21RecordSerializer } from "./Marc21RecordSerializer";
 export { Marc21RecordSchema } from "./Marc21RecordSchema";
+export { Marc21FormFeedback } from "./Marc21FormFeedback";

@@ -89,13 +89,32 @@ export class Marc21RecordSerializer extends DepositRecordSerializer {
    * @returns {object} - object representing errors
    */
   deserializeErrors(errors) {
-    let deserializedErrors = [];
-
-    for (const e of errors) {
+    let deserializedErrors = {};
+    let i = 0;
+    while (i < errors.length) {
+      const e = errors[i];
       let keys = e.field.split(".");
-      keys.shift();
-      let field = keys.join(".");
-      _set(deserializedErrors, field, e.messages.join(" "));
+      if (keys[0] === "metadata") {
+        if (keys[1] == "fields") {
+          let fields = _get(this.current_record, "metadata.fields");
+          const field = keys[2];
+          let j = 0;
+          while (j < fields.length) {
+            if (field == fields[j].id) {
+              _set(
+                deserializedErrors,
+                `metadata.fields.${j}.${keys[4]}`,
+                e.messages.join(" ")
+              );
+            }
+            j++;
+          }
+        }
+      } else {
+        _set(deserializedErrors, e.field, e.messages.join(" "));
+      }
+
+      i++;
     }
     return deserializedErrors;
   }
