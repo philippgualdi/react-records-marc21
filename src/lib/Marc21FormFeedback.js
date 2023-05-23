@@ -10,7 +10,7 @@ import _get from "lodash/get";
 import _isObject from "lodash/isObject";
 import { FormFeedback } from "react-invenio-deposit";
 
-class Marc21DisconnectedFormFeedback extends FormFeedback {
+class Marc21FormFeedback extends FormFeedback {
   constructor(props) {
     super(props);
     this.labels = {
@@ -53,10 +53,7 @@ class Marc21DisconnectedFormFeedback extends FormFeedback {
     // Step 0 - Create object with collapsed 1st and 2nd level keys
     //          e.g., {metadata: {creators: ,,,}} => {"metadata.creators": ...}
     // For now, only for metadata, files and access.embargo
-    const metadata = errors.metadata || {};
-    const step0Metadata = Object.entries(metadata).map(([key, value]) => {
-      return ["metadata." + key, value];
-    });
+
     const files = errors.files || {};
     const step0Files = Object.entries(files).map(([key, value]) => {
       return ["files." + key, value];
@@ -107,19 +104,16 @@ class Marc21DisconnectedFormFeedback extends FormFeedback {
   }
 }
 
-Marc21DisconnectedFormFeedback.propTypes = {
+Marc21FormFeedback.propTypes = {
   errors: PropTypes.object,
   actionState: PropTypes.string,
   labels: PropTypes.object,
 };
 
-Marc21DisconnectedFormFeedback.defaultProps = {
+Marc21FormFeedback.defaultProps = {
   errors: undefined,
   actionState: undefined,
   labels: undefined,
 };
 
-export const Marc21FormFeedback = connect(
-  mapStateToProps,
-  null
-)(Marc21DisconnectedFormFeedback);
+export const Marc21FormFeedback;
